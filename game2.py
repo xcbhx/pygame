@@ -3,7 +3,7 @@ import pygame
 pygame.init()
 # Configure the screen
 screen = pygame.display.set_mode([500, 500])
-# Creat the game loop
+# Create the game loop
 running = True
 while running:
   # Looks at events
