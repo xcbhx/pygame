@@ -18,8 +18,11 @@ class GameObject(pygame.sprite.Sprite):
         self.surf = pygame.image.load(image)
         self.x = x
         self.y = y
+        self.rect = self.surf.get_rect()
 
     def render(self, screen):
+        self.rect.x = self.x
+        self.rect.y = self.y 
         screen.blit(self.surf, (self.x, self.y))
 
 class Apple(GameObject):
@@ -44,6 +47,24 @@ class Apple(GameObject):
 class Strawberry(GameObject):
     def __init__(self):
         super(Strawberry, self).__init__(0, 0, 'strawberry.png')
+        self.dx = 0
+        self.dy = (randint(0, 200) / 100) + 1
+        self.reset()
+
+    def move(self):
+        self.x += self.dx
+        self.y += self.dy
+        # Check the y position of the strawberry
+        if self.y > 500:
+            self.reset()
+
+    def reset(self):
+        self.x = choice(lanes)
+        self.y = -64
+
+class Bomb(GameObject):
+    def __init__(self):
+        super(Bomb, self).__init__(0, 0, 'bomb.gif')
         self.dx = 0
         self.dy = (randint(0, 200) / 100) + 1
         self.reset()
@@ -108,6 +129,7 @@ class Player(GameObject):
 #  Instance of GameObject
 apple = Apple()
 strawberry = Strawberry()
+bomb = Bomb()
 player = Player()
 
 # Make a group
@@ -115,6 +137,13 @@ all_sprites = pygame.sprite.Group()
 all_sprites.add(player)
 all_sprites.add(apple)
 all_sprites.add(strawberry)
+all_sprites.add(bomb)
+
+# make a fruits Group
+fruit_sprites = pygame.sprite.Group()
+fruit_sprites.add(apple)
+fruit_sprites.add(strawberry)
+
 
 
 # Create the game loop
@@ -144,6 +173,16 @@ while running:
     for entity in all_sprites:
         entity.move()
         entity.render(screen)
+
+    # Check Colisions
+    fruit = pygame.sprite.spritecollideany(player, fruit_sprites)
+    if fruit:
+        fruit.reset()
+    
+    # Check collision player and bomb
+    if pygame.sprite.collide_rect(player, bomb):
+        running = False
+
     # Update the window
     pygame.display.flip()
 
