@@ -23,13 +23,21 @@
 
 <h3>Requirements</h3>
 <p>Ensure you have the latest version of Pygame installed:</p>
+
+
+```python
 pip install pygame
+```
 
 
 <h3>Getting Started</h3>
 <p>To start exploring Pygame, run the main game file:</p>
 
-python main.py
+```python
+python3 sprites.py
+```
+
+
 
 <p>Enjoy the journey into game development and OOP with Pygame!</p>
 
